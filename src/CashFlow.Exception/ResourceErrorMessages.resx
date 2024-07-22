@@ -123,8 +123,18 @@
   <data name="EXPENSES_CANNOT_BE_FUTURE" xml:space="preserve">
     <value>The expenses can't be to the future.</value>
   </data>
+  <data name="EXPENSE_NOT_FOUND" xml:space="preserve">
+    <value>Expense not found.</value>
+  </data>
   <data name="INVALID_PAYMENT_TYPE" xml:space="preserve">
     <value>Invalid payment type.</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ResourceErrorMessages" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>ResourceErrorMessages.resx;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="ResourceErrorMessages_Designer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>ResourceErrorMessages.Designer.cs;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="TITLE_REQUIRED" xml:space="preserve">
     <value>The title is required.</value>
