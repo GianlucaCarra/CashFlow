@@ -11,8 +11,8 @@ public static class DependencyInjectionExtension
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        AddRepositories(services);
         AddDbContext(services, configuration);
+        AddRepositories(services);
     }
 
     private static void AddRepositories(IServiceCollection services)

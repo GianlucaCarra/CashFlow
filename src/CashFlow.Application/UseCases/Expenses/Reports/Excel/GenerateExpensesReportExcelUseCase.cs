@@ -14,9 +14,9 @@ public class GenerateExpensesReportExcelUseCase : IGenerateExpensesReportExcelUs
         _repository = repository;
     }
 
-    public async Task<byte[]> Execute(DateOnly month)
+    public async Task<byte[]> Execute(DateOnly date)
     {
-        var expenses = await _repository.FilterByMonth(month);
+        var expenses = await _repository.FilterByMonth(date);
 
         if (expenses.Count == 0)
         {
@@ -29,7 +29,7 @@ public class GenerateExpensesReportExcelUseCase : IGenerateExpensesReportExcelUs
         workbook.Style.Font.FontSize = 12;
         workbook.Style.Font.FontName = "Times New Roman";
 
-        var worksheet = workbook.Worksheets.Add(month.ToString("Y"));
+        var worksheet = workbook.Worksheets.Add(date.ToString("Y"));
         var row = 2;
 
         Insertheader(worksheet);

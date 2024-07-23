@@ -34,7 +34,7 @@ public class RegisterExpenseValidatorTests
     {
         var validator = new ExpenseValidator();
         var request = RequestRegisterExpenseJsonBuilder.Build();
-        request.Type = (PaymentType)30;
+        request.PaymentType = (PaymentType)30;
         var result = validator.Validate(request);
 
         result.IsValid.Should().BeFalse();
