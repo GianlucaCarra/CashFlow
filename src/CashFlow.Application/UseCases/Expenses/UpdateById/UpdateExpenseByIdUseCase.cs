@@ -1,41 +1,49 @@
-﻿using CashFlow.Domain.Repositories.Expenses;
-using CashFlow.Domain.Repositories;
-using CashFlow.Exception.ExceptionsBase;
-using CashFlow.Exception;
-using CashFlow.Communication.Requests;
+﻿using AutoMapper;
 using CashFlow.Application.UseCases.Expenses.Register;
+using CashFlow.Communication.Requests;
+using CashFlow.Domain.Entities;
+using CashFlow.Domain.Repositories;
+using CashFlow.Domain.Repositories.Expenses;
+using CashFlow.Exception;
+using CashFlow.Exception.ExceptionsBase;
 
 namespace CashFlow.Application.UseCases.Expenses.UpdateById;
 public class UpdateExpenseByIdUseCase : IUpdateExpenseByIdUseCase
 {
-    private readonly IExpensesWriteOnlyRepository _repository;
+    private readonly IExpenseUpdateRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
     public UpdateExpenseByIdUseCase(
-        IExpensesWriteOnlyRepository repository,
-        IUnitOfWork unitOfWork)
+        IExpenseUpdateRepository repository,
+        IUnitOfWork unitOfWork,
+        IMapper mapper)
     {
         _repository = repository;
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task Execute(long id, RequestExpenseJson request)
     {
         Validate(request);
 
-        var result = await _repository.Update(id);
+        var expense = await _repository.GetById(id);
 
-        if (!result)
+        if (expense is null)
         {
             throw new NotFoundException(ResourceErrorMessages.EXPENSE_NOT_FOUND);
         }
 
+        _mapper.Map(request, expense);
+
+        _repository.Update(expense);
         await _unitOfWork.Commit();
     }
 
     private void Validate(RequestExpenseJson request)
     {
-        var result = new UpdateExpenseByIdValidator().Validate(request);
+        var result = new ExpenseValidator().Validate(request);
 
         if (!result.IsValid)
         {

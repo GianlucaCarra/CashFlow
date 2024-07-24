@@ -5,5 +5,4 @@ public interface IExpensesWriteOnlyRepository
 {
     Task Add(Expense expense);
     Task<bool> Delete(long id);
-    Task<bool> Update(long id);
 }

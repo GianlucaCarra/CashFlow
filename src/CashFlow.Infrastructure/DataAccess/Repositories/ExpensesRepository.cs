@@ -3,7 +3,7 @@ using CashFlow.Domain.Repositories.Expenses;
 using Microsoft.EntityFrameworkCore;
 
 namespace CashFlow.Infrastructure.DataAccess.Repositories;
-internal class ExpensesRepository : IExpensesReadOnlyRepository, IExpensesWriteOnlyRepository
+internal class ExpensesRepository : IExpensesReadOnlyRepository, IExpensesWriteOnlyRepository, IExpenseUpdateRepository
 {
     private readonly CashFlowDbContext _dbContext;
     public ExpensesRepository(CashFlowDbContext dbContext)
@@ -31,18 +31,9 @@ internal class ExpensesRepository : IExpensesReadOnlyRepository, IExpensesWriteO
 
     }
 
-    public async Task<bool> Update(long id)
+    public void Update(Expense expense)
     {
-        var result = await _dbContext.Expenses.FirstOrDefaultAsync(e => e.Id == id);
-
-        if (result is null)
-        {
-            return false;
-        }
-
-        _dbContext.Expenses.Update(result);
-
-        return true;
+        _dbContext.Expenses.Update(expense);
     }
  
     public async Task<List<Expense>> GetAll()
@@ -50,8 +41,13 @@ internal class ExpensesRepository : IExpensesReadOnlyRepository, IExpensesWriteO
         return await _dbContext.Expenses.AsNoTracking().ToListAsync();
     }
 
-    public async Task<Expense?> GetById(long id)
+    async Task<Expense?> IExpensesReadOnlyRepository.GetById(long id)
     {
         return await _dbContext.Expenses.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
+    }
+
+    async Task<Expense> IExpenseUpdateRepository.GetById(long id)
+    {
+        return await _dbContext.Expenses.FirstOrDefaultAsync(e => e.Id == id);
     }
 }
